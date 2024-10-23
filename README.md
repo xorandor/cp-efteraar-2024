@@ -32,3 +32,4 @@ Vores ideer:
 10. Indstilling slå til/fra
 11. Slet beskeder (administrator)
 12. Huske navn
+13. Log ud
