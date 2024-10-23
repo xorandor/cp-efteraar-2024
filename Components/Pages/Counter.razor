@@ -1,0 +1,37 @@
+﻿@page "/counter"
+@rendermode InteractiveServer
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Allans Counter123</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">+1</button>
+<button class="btn btn-primary" @onclick="IncrementCount5">+5</button>
+<button class="btn btn-primary">+50</button>
+
+<br><br>
+
+<input type="number" @bind="incrementValue"/>
+<button class="btn btn-primary" @onclick="IncrementValueX">+@incrementValue</button>
+
+@code {
+    private int currentCount = 0;
+
+    private int incrementValue = 0;
+
+    private void IncrementCount()
+    {
+        currentCount ++;
+    }
+
+    private void IncrementCount5()
+    {
+        currentCount+=5;
+    }
+
+    private void IncrementValueX(){
+        currentCount+= incrementValue;
+    }
+}

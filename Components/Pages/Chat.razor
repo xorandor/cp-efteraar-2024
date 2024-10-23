@@ -1,0 +1,71 @@
+﻿@page "/chat"
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Web;
+@inject ChatMessages ChatMessages;
+
+<PageTitle>Chat</PageTitle>
+
+@if(!_userHasEnteredName)
+{
+    <h1>Login</h1>
+
+    <div class="mb-3">
+        <label for="navnefelt" class="form-label">Indtast dit navn</label>
+        <input type="text" class="form-control" id="navnefelt" @bind="_name" />
+    </div>
+
+    <button class="btn btn-primary" @onclick="Login">Login</button>
+}
+else
+{
+    <h1>Chat</h1>
+
+    <div class="mb-3">
+        <label for="besked" class="form-label">Chatbesked</label>
+        <textarea class="form-control" id="besked" rows="3" @bind="_newMessage"></textarea>
+    </div>
+
+    <button class="btn btn-primary" @onclick="SendMessage">Send besked</button>
+
+    <ul class="list-group mt-2">
+        @foreach (var message in ChatMessages.GetAllMessages().Reverse<ChatMessages.Message>())
+        {
+            <li class="list-group-item">
+                <p style="margin: 0; font-size: 0.8rem"><strong>@message.Name</strong></p>
+                @message.Text
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    string _newMessage;
+    string _name;
+    bool _userHasEnteredName = false;
+
+    protected override void OnInitialized()
+    {
+        Task.Run(async () =>
+        {
+            while(true)
+            {
+                await InvokeAsync(StateHasChanged);
+                await Task.Delay(1000);
+            }
+        });
+    }
+
+    private void SendMessage()
+    {
+        Console.WriteLine("send besked:");
+        Console.WriteLine(_newMessage);
+        ChatMessages.AddMessage(new ChatMessages.Message(_name, _newMessage));
+        _newMessage = null;
+    }
+
+    private void Login(MouseEventArgs e)
+    {
+        _userHasEnteredName = true;
+    }
+}
